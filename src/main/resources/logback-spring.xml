@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SS} %green([%thread]) %highlight(%-5level) ${PID:- } %-40.40logger{39} : %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+<!--        <destination>13.233.129.161:5044</destination>-->
+        <destination>192.168.0.253:5959</destination>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <mdc/>
+                <context/>
+                <logLevel/>
+                <loggerName/>
+                <pattern>
+                    <pattern>
+                        {
+                        "app": "spring_boot_elk"
+                        }
+                    </pattern>
+                </pattern>
+                <threadName/>
+                <message/>
+                <logstashMarkers/>
+                <stackTrace/>
+            </providers>
+        </encoder>
+        <!-- Exclude Spring Boot logs from Logstash -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+    </appender>
+    <logger name="org.springframework" level="ERROR">
+        <appender-ref ref="logstash"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logstash"/>
+    </root>
+</configuration>

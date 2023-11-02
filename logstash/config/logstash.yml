@@ -1,0 +1,3 @@
+http.host: "192.168.0.253"
+path.config: E:/JavaIDE/Eclipse2020/EclipseProjectTask-1/ERROR-LOGGING-ELK/logstash/pipeline
+xpack.monitoring.elasticsearch.hosts: [ "192.168.0.253:9200" ]
